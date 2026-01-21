@@ -1,0 +1,49 @@
+{
+  "name": "minimal-jquery",
+  "version": "1.0.0",
+  "description": "Minimal jQuery 4.0 starter with Bun, TypeScript, and JSX support",
+  "type": "module",
+  "bin": {
+    "create": "bin/create-jquery-app.js"
+  },
+  "scripts": {
+    "dev": "bun --hot server.ts",
+    "build": "bun build src/index.tsx --outdir=dist --target browser --minify",
+    "test": "bun test",
+    "test:watch": "bun test --watch"
+  },
+  "keywords": [
+    "jquery",
+    "bun",
+    "typescript",
+    "jsx",
+    "starter",
+    "template",
+    "minimal"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^4.0.0"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^15.11.7",
+    "@types/bun": "latest",
+    "@types/jquery": "^3.5.31"
+  },
+  "files": [
+    "bin",
+    "src",
+    "public",
+    "tests",
+    "server.ts",
+    "happydom.ts",
+    "bunfig.toml",
+    "tsconfig.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}

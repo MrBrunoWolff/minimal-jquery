@@ -1,7 +1,7 @@
 {
   "name": "minimal-jquery",
   "version": "1.0.0",
-  "description": "Minimal jQuery 4.0 starter with Bun, TypeScript, and JSX support",
+  "description": "Minimal jQuery 4.0 starter-kit with Bun, TypeScript, and JSX support",
   "type": "module",
   "bin": {
     "create": "bin/create-jquery-app.js"

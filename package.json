@@ -27,7 +27,7 @@
     "jquery": "^4.0.0"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^15.11.7",
+    "@happy-dom/global-registrator": "^20.3.4",
     "@types/bun": "latest",
     "@types/jquery": "^3.5.31"
   },

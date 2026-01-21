@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "bun --hot server.ts",
-    "build": "bun build src/index.tsx --outdir=dist --target browser --minify",
+    "build": "bun build src/index.tsx --outdir=dist --target browser --format=iife --minify && cp public/index.html dist/index.html && cp public/style.css dist/style.css && mv dist/index.js dist/bundle.js",
     "test": "bun test",
     "test:watch": "bun test --watch"
   },

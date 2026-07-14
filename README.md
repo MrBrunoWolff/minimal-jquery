@@ -18,11 +18,7 @@ A minimal, modern jQuery 4.0 starter template powered by Bun. Zero-build develop
 ### Create a new project
 
 ```bash
-# Using Bun (recommended)
 bunx minimal-jquery create my-app
-
-# Or using npm
-npx minimal-jquery create my-app
 ```
 
 ### Or clone this repository

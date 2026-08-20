@@ -1,5 +1,9 @@
 {
   "name": "@mrbrunowolff/minimal-jquery",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrBrunoWolff/minimal-jquery.git"
+  },
   "version": "1.0.0",
   "publishConfig": {
     "access": "public"

@@ -18,13 +18,13 @@ A minimal, modern jQuery 4.0 starter template powered by Bun. Zero-build develop
 ### Create a new project
 
 ```bash
-bunx minimal-jquery create my-app
+bunx @mrbrunowolff/minimal-jquery create my-app
 ```
 
 ### Or clone this repository
 
 ```bash
-git clone https://github.com/yourusername/minimal-jquery.git my-app
+git clone https://github.com/MrBrunoWolff/minimal-jquery.git my-app
 cd my-app
 bun install
 ```

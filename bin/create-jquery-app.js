@@ -12,11 +12,11 @@ const projectName = args[0];
 
 if (!projectName) {
   console.log('');
-  console.log('Usage: bunx minimal-jquery create <project-name>');
-  console.log('   or: npx minimal-jquery create <project-name>');
+  console.log('Usage: bunx @mrbrunowolff/minimal-jquery create <project-name>');
+  console.log('   or: npx @mrbrunowolff/minimal-jquery create <project-name>');
   console.log('');
   console.log('Example:');
-  console.log('  bunx minimal-jquery create my-app');
+  console.log('  bunx @mrbrunowolff/minimal-jquery create my-app');
   console.log('');
   process.exit(1);
 }

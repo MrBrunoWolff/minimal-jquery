@@ -65,6 +65,12 @@ bun run build
 
 This generates a minified bundle in the `dist/` directory.
 
+`public/index.html` is the entry point for both dev and build: Bun follows the
+`<script>` and `<link>` it references, so the same file drives the dev server and
+the production bundle. The build emits content-hashed assets with the references
+rewritten, rather than copying files and renaming a bundle to match a hardcoded
+`<script src>`.
+
 ## 📁 Project Structure
 
 ```
@@ -76,14 +82,14 @@ minimal-jquery/
 │   └── utils/
 │       └── helpers.ts         # Utility functions
 ├── public/
-│   ├── index.html             # HTML template
+│   ├── index.html             # Entry point: <script src> drives both dev and build
 │   └── style.css              # Global styles
 ├── tests/
 │   ├── components/
 │   │   └── Counter.test.ts    # Component tests
 │   └── utils/
 │       └── helpers.test.ts    # Utility tests
-├── server.ts                  # Dev server with on-the-fly transpilation
+├── server.ts                  # Dev server: imports index.html, Bun bundles + hot-reloads
 ├── happydom.ts                # DOM testing setup
 ├── bunfig.toml                # Bun configuration
 └── package.json

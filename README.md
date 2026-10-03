@@ -1,197 +1,98 @@
-# ⚡ Minimal jQuery 4.0 + Bun
+# Minimal jQuery
 
-A minimal, modern jQuery 4.0 starter template powered by Bun. Zero-build development with TypeScript, JSX, and ES modules.
+A minimal jQuery 4 starter template built on Bun and TypeScript, with a hot-reloading dev server and happy-dom tests.
 
-## ✨ Features
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-- **jQuery 4.0** - Latest version with modern ES module support
-- **Bun Runtime** - Fast JavaScript runtime and bundler
-- **TypeScript + TSX** - Full TypeScript support with TSX file extensions
-- **Zero-Build Dev** - On-the-fly transpilation during development
-- **Hot Reload** - Automatic server reload with `bun --hot`
-- **DOM Testing** - Built-in testing with happy-dom
-- **ES Modules** - Modern JavaScript module system
-- **Production Build** - Optimized bundling for deployment
+## Features
 
-## 🚀 Quick Start
+- jQuery 4 with `@types/jquery`, written in strict TypeScript (`.ts` / `.tsx`)
+- Dev server on `Bun.serve` that imports `public/index.html` as a route, so Bun bundles and hot-reloads `src/` and `style.css` on demand (`bun --hot`)
+- One HTML entry point for both dev and the production build (`bun build ./public/index.html`, minified, content-hashed assets)
+- Components as functions that return HTML template strings, with interactions wired through delegated jQuery handlers
+- Tests with `bun test`, with happy-dom preloaded through `bunfig.toml`
+- Supply-chain guards: `bunfig.toml` refuses npm versions younger than 3 days, and `bun audit` fails on high or critical advisories
+- GitHub Actions CI that runs test, build and audit, then publishes to npm through OIDC trusted publishing
 
-### Create a new project
+## Quick start
 
-```bash
-bunx @mrbrunowolff/minimal-jquery create my-app
-```
+### Clone
 
-### Or clone this repository
-
-```bash
-git clone https://github.com/MrBrunoWolff/minimal-jquery.git my-app
-cd my-app
+```sh
+git clone https://github.com/MrBrunoWolff/minimal-jquery.git
+cd minimal-jquery
 bun install
-```
-
-## 📦 Usage
-
-### Development
-
-Start the development server with hot reload:
-
-```bash
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+The dev server runs at [http://localhost:3000](http://localhost:3000).
 
-The server watches for file changes and automatically reloads. Just refresh your browser to see updates!
+## Scripts
 
-### Testing
+| Command              | Description                                                                     |
+| -------------------- | ------------------------------------------------------------------------------- |
+| `bun run dev`        | Start the dev server on port 3000 with hot reload (`bun --hot server.ts`)       |
+| `bun run build`      | Bundle `public/index.html` and everything it references into `dist/`, minified  |
+| `bun run test`       | Run the test suite in parallel (`bun test --parallel`)                          |
+| `bun run test:watch` | Run the tests in watch mode                                                     |
+| `bun run audit`      | Audit dependencies, failing on high or critical advisories                      |
 
-Run tests with happy-dom:
-
-```bash
-# Run all tests
-bun test
-
-# Watch mode
-bun test --watch
-```
-
-### Production Build
-
-Create an optimized bundle:
-
-```bash
-bun run build
-```
-
-This generates a minified bundle in the `dist/` directory.
-
-`public/index.html` is the entry point for both dev and build: Bun follows the
-`<script>` and `<link>` it references, so the same file drives the dev server and
-the production bundle. The build emits content-hashed assets with the references
-rewritten, rather than copying files and renaming a bundle to match a hardcoded
-`<script src>`.
-
-## 📁 Project Structure
+## Project structure
 
 ```
 minimal-jquery/
-├── src/
-│   ├── index.tsx              # Main entry point
-│   ├── components/
-│   │   └── Counter.tsx        # Example JSX component
-│   └── utils/
-│       └── helpers.ts         # Utility functions
+├── .github/workflows/ci.yml   # Test, build, audit, then publish to npm
+├── bin/
+│   └── create-jquery-app.js   # Scaffolding CLI (package "create" bin)
 ├── public/
-│   ├── index.html             # Entry point: <script src> drives both dev and build
+│   ├── index.html             # Entry point for both dev and build
 │   └── style.css              # Global styles
+├── src/
+│   ├── index.tsx              # App bootstrap and jQuery event handlers
+│   ├── components/
+│   │   └── Counter.tsx        # Template-string component
+│   └── utils/
+│       └── helpers.ts         # formatDate, createElement, debounce
 ├── tests/
 │   ├── components/
-│   │   └── Counter.test.ts    # Component tests
+│   │   └── Counter.test.ts
 │   └── utils/
-│       └── helpers.test.ts    # Utility tests
-├── server.ts                  # Dev server: imports index.html, Bun bundles + hot-reloads
-├── happydom.ts                # DOM testing setup
-├── bunfig.toml                # Bun configuration
-└── package.json
+│       └── helpers.test.ts
+├── server.ts                  # Dev server: imports index.html, Bun bundles and hot-reloads
+├── happydom.ts                # Registers happy-dom globals for tests
+├── bunfig.toml                # Install age gate, test preload, JSX transform
+├── tsconfig.json
+├── package.json
+├── bun.lock
+└── LICENSE
 ```
 
-## 🎯 Philosophy
+## HTML entry point
 
-This starter embraces a **minimal, modern approach** to jQuery development:
+`public/index.html` drives both the dev server and the production bundle. Bun follows the `<script>` and `<link>` tags it references (`../src/index.tsx` and `style.css`). `server.ts` imports the file and serves it for every route. `bun run build` writes content-hashed assets to `dist/` and rewrites the references to match, so nothing needs to be copied or renamed by hand.
 
-- **No build step in development** - Bun transpiles TypeScript on-the-fly
-- **Template strings for components** - Clean component structure with functions returning HTML
-- **jQuery for interactions** - Powerful DOM manipulation and events
-- **ES modules** - Modern import/export syntax
-- **Production-ready** - Optimized builds when you need them
+## Components
 
-## 💡 Examples
+A component is a plain function that returns an HTML string. Behavior is attached with delegated jQuery handlers, so it survives re-renders:
 
-### Using jQuery with TypeScript
-
-```typescript
-import $ from 'jquery';
+```ts
+import $ from "jquery";
+import { Counter } from "./components/Counter";
 
 $(document).ready(() => {
-  $('#app').text('Hello jQuery 4.0!');
-  
-  $('button').on('click', () => {
-    console.log('Clicked!');
+  $("#app").html(Counter({ initialCount: 0 }));
+
+  $(document).on("click", ".counter-btn.increment", () => {
+    const $display = $(".counter-display");
+    $display.text((parseInt($display.text()) || 0) + 1);
   });
 });
 ```
 
-### Component Functions with Template Strings
+## Publishing
 
-```typescript
-function Counter({ initialCount }: { initialCount: number }): string {
-  return `
-    <div class="counter">
-      <div class="display">${initialCount}</div>
-      <button class="increment">+</button>
-    </div>
-  `;
-}
+The package is `@mrbrunowolff/minimal-jquery`. On a push to `main`, or when the workflow is triggered by hand (`gh workflow run ci.yml`), the `publish` job runs `npm publish` if the `package.json` version is not on npm yet. It authenticates through npm trusted publishing (OIDC), not a stored token. Trusted publishing cannot perform a package's first publish, so the job skips until the package has been published once by hand and a trusted publisher has been configured on it (organization `MrBrunoWolff`, this repository, workflow `ci.yml`, no environment).
 
-// Render component
-const html = Counter({ initialCount: 0 });
-$('#app').html(html);
+## License
 
-// Event handlers with jQuery
-$(document).on('click', '.increment', function() {
-  const $display = $('.display');
-  const current = parseInt($display.text()) || 0;
-  $display.text(current + 1);
-});
-```
-
-### Testing with happy-dom
-
-```typescript
-/// <reference lib="dom" />
-
-import { test, expect } from "bun:test";
-import $ from "jquery";
-
-test("jQuery manipulation works", () => {
-  document.body.innerHTML = '<div id="test">Hello</div>';
-  
-  $("#test").text("World");
-  
-  expect($("#test").text()).toBe("World");
-});
-```
-
-## 🛠️ Tech Stack
-
-- [jQuery 4.0](https://jquery.com/) - Fast, small, and feature-rich JavaScript library
-- [Bun](https://bun.sh/) - Fast all-in-one JavaScript runtime
-- [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
-- [happy-dom](https://github.com/capricorn86/happy-dom) - Fast DOM implementation for testing
-
-## 📖 Scripts
-
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Start development server with hot reload |
-| `bun run build` | Create production bundle |
-| `bun test` | Run tests |
-| `bun test --watch` | Run tests in watch mode |
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to submit issues and pull requests.
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details
-
-## 🔗 Links
-
-- [jQuery Documentation](https://api.jquery.com/)
-- [Bun Documentation](https://bun.sh/docs)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-
----
-
-**Happy coding with jQuery 4.0! 🎉**
+MIT — see [LICENSE](LICENSE).

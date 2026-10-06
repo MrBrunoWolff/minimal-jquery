@@ -32,12 +32,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^4.0.0"
+    "jquery": "latest"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^20.14.5",
-    "@types/bun": "1.4.2",
-    "@types/jquery": "^4.0.1"
+    "@happy-dom/global-registrator": "latest",
+    "@types/bun": "latest",
+    "@types/jquery": "latest"
   },
   "files": [
     "bin",
